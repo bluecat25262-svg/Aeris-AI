@@ -2,11 +2,17 @@
 <html>
 <head>
     <title>Aeris AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body style="background-color:black; color:white; font-family:Arial;">
-    <h1>Aeris AI</h1>
-    <p>If you see this text, Flask + templates are working.</p>
-    <a href="/rooms" style="color:lightgreen;">Start</a>
+<body>
+
+<header>Aeris AI</header>
+
+<div class="container">
+    <a href="/rooms" class="button">Start</a>
+</div>
+
 </body>
 </html>
+
 
