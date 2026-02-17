@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room Sensors - Aeris AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>Room Sensors</header>
+
+<div class="container">
+
+    <div class="system-health">
+        <h2>System Health Overview</h2>
+        <p>Active Sensors: <span class="green">11</span></p>
+        <p>Inactive Sensors: <span class="red">1</span></p>
+    </div>
+
+    {% for room in rooms %}
+    <a href="/room/{{ room.name }}" class="room-card">
+        <div class="room-left">
+            <h3>{{ room.name }}</h3>
+            <p>Sensors Active</p>
+        </div>
+
+        <div class="room-right">
+            {% if room.risk == "danger" %}
+                <span class="status red">HIGH RISK</span>
+            {% elif room.risk == "warning" %}
+                <span class="status orange">MODERATE RISK</span>
+            {% else %}
+                <span class="status green">NORMAL</span>
+            {% endif %}
+        </div>
+    </a>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
