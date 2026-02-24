@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aeris AI - Alerts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="page-title">System Alerts</h1>
+
+        <!-- Leak Alerts Section -->
+        <div class="alert-section">
+            <h2 class="section-title danger-text">Leak Alerts</h2>
+
+            <div class="alert-card danger">
+                <h3>🚨 Carbon Monoxide Risk - Kitchen</h3>
+                <p>AI prediction indicates elevated CO levels may occur within 2 hours.</p>
+                <span class="alert-time">Severity: High</span>
+            </div>
+
+            <div class="alert-card warning">
+                <h3>⚠ Hydrogen Sulfide - Garage</h3>
+                <p>Moderate increase detected. Monitor levels closely.</p>
+                <span class="alert-time">Severity: Moderate</span>
+            </div>
+        </div>
+
+        <!-- Maintenance Alerts Section -->
+        <div class="alert-section">
+            <h2 class="section-title warning-text">System Maintenance</h2>
+
+            <div class="alert-card warning">
+                <h3>🔧 Basement Sensor Battery Low</h3>
+                <p>Battery at 15%. Replace within 48 hours.</p>
+                <span class="alert-time">Maintenance Required</span>
+            </div>
+
+            <div class="alert-card normal">
+                <h3>✔ Bedroom Sensor Operational</h3>
+                <p>All systems functioning normally.</p>
+                <span class="alert-time">Status: Normal</span>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="back-button">
+            <a href="{{ url_for('room_overview') }}">← Back to Rooms</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

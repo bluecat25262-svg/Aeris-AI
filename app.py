@@ -2,8 +2,6 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-# ---------------- MOCK DATA ---------------- #
-
 rooms = [
     {"name": "Kitchen", "risk": "danger"},
     {"name": "Garage", "risk": "warning"},
@@ -11,29 +9,29 @@ rooms = [
     {"name": "Basement", "risk": "normal"},
 ]
 
-# ---------------- ROUTES ---------------- #
-
 @app.route("/")
 def home():
     return render_template("home.html")
 
 @app.route("/rooms")
-def room_overview():
+def rooms_page():
     return render_template("rooms.html", rooms=rooms)
 
 @app.route("/room/<room_name>")
-def sensor_detail(room_name):
-    return render_template("sensor.html", room=room_name)
+def room_detail(room_name):
+    return render_template("room_detail.html", room=room_name)
 
 @app.route("/alerts")
 def alerts():
     return render_template("alerts.html")
 
+@app.route("/immediate")
+def immediate():
+    return render_template("immediate_alerts.html")
+
 @app.route("/gas/<gas_name>")
 def gas_page(gas_name):
     return render_template("gas.html", gas=gas_name)
-
-# ---------------- RUN ---------------- #
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -6,9 +6,9 @@ body {
 }
 
 header {
-    padding: 20px;
     background-color: #111;
-    font-size: 24px;
+    padding: 20px;
+    font-size: 22px;
     font-weight: bold;
 }
 
@@ -18,12 +18,16 @@ header {
 
 .card {
     background-color: #1a1a1a;
-    padding: 15px;
-    margin: 12px 0;
-    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
     text-decoration: none;
     color: white;
     display: block;
+}
+
+.card:hover {
+    background-color: #222;
 }
 
 .green { color: #00ff7f; }
@@ -39,56 +43,13 @@ header {
     font-weight: bold;
 }
 
-
-
-
-
-
-.system-health {
+.system-box {
     background-color: #121212;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 25px;
 }
 
-.system-health h2 {
-    margin-top: 0;
-}
-
-.room-card {
-    background-color: #1a1a1a;
-    padding: 20px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-decoration: none;
-    color: white;
-    transition: 0.2s ease;
-}
-
-.room-card:hover {
-    background-color: #222;
-}
-
-.room-left h3 {
-    margin: 0;
-}
-
-.room-left p {
-    margin: 5px 0 0 0;
-    font-size: 14px;
-    color: #aaa;
-}
-
 .status {
     font-weight: bold;
-    font-size: 14px;
-    padding: 6px 10px;
-    border-radius: 5px;
 }
-
-.green { color: #00ff7f; }
-.orange { color: orange; }
-.red { color: red; }

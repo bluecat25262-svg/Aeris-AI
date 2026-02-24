@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ room }} Sensors</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>{{ room }} - Sensor Details</header>
+
+<div class="container">
+
+    <div class="card">
+        Temperature: 72°F<br>
+        Humidity: 45%<br>
+        Pressure: Normal
+    </div>
+
+    <a href="/gas/Carbon Monoxide" class="card green">
+        Carbon Monoxide — Safe
+    </a>
+
+    <a href="/gas/Chlorine" class="card orange">
+        Chlorine — Moderate
+    </a>
+
+    <a href="/gas/Hydrogen Sulfide" class="card red">
+        Hydrogen Sulfide — High
+    </a>
+
+</div>
+
+</body>
+</html>
