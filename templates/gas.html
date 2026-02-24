@@ -1,23 +1,64 @@
-@app.route("/gas/<gas_name>")
-def gas_page(gas_name):
-    gas_data = {
-        "Carbon Monoxide": {
-            "reading": "12 ppm",
-            "status": "normal",
-        },
-        "Chlorine": {
-            "reading": "3 ppm",
-            "status": "warning",
-        },
-        "Hydrogen Sulfide": {
-            "reading": "25 ppm",
-            "status": "danger",
-        }
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ gas }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-    data = gas_data.get(gas_name, {
-        "reading": "Unknown",
-        "status": "normal"
-    })
+<header>{{ gas }} Sensor Data</header>
 
-    return render_template("gas.html", gas=gas_name, data=data)
+<div class="container">
+
+    <!-- CURRENT READING -->
+    <div class="card">
+        <h2>Current Reading</h2>
+        <p class="{% if data.status == 'danger' %}red{% elif data.status == 'warning' %}orange{% else %}green{% endif %}">
+            {{ data.reading }}
+        </p>
+
+        {% if data.status == 'danger' %}
+            <p class="red status">HIGH RISK DETECTED</p>
+        {% elif data.status == 'warning' %}
+            <p class="orange status">MODERATE RISK</p>
+        {% else %}
+            <p class="green status">SAFE LEVELS</p>
+        {% endif %}
+    </div>
+
+    <!-- ENVIRONMENTAL CONDITIONS -->
+    <div class="card">
+        <h2>Environmental Conditions</h2>
+        <p>Temperature: 72°F</p>
+        <p>Humidity: 45%</p>
+        <p>Pressure: Normal</p>
+        <p>Weather: Clear</p>
+        <p>Air Quality Index: 42 (Moderate)</p>
+    </div>
+
+    <!-- TREND SECTION -->
+    <div class="card">
+        <h2>Reading Trends (Past Year)</h2>
+        <p>Graphical trend data will appear here.</p>
+        <div style="height:120px; background:#222; border-radius:6px; display:flex; align-items:center; justify-content:center;">
+            <span style="color:#888;">Trend Graph Placeholder</span>
+        </div>
+    </div>
+
+    <!-- AI PREDICTION -->
+    <div class="card">
+        <h2>AI Prediction</h2>
+        {% if data.status == 'danger' %}
+            <p class="red">⚠ 85% probability of continued gas increase.</p>
+        {% elif data.status == 'warning' %}
+            <p class="orange">⚠ 45% probability of rising gas levels.</p>
+        {% else %}
+            <p class="green">Low probability of gas leak.</p>
+        {% endif %}
+        <p>Recommendation: Monitor closely and ventilate if needed.</p>
+    </div>
+
+</div>
+
+</body>
+</html>

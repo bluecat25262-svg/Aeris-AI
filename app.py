@@ -29,9 +29,30 @@ def alerts():
 def immediate():
     return render_template("immediate_alerts.html")
 
+
 @app.route("/gas/<gas_name>")
 def gas_page(gas_name):
-    return render_template("gas.html", gas=gas_name)
+    gas_data = {
+        "Carbon Monoxide": {
+            "reading": "12 ppm",
+            "status": "normal",
+        },
+        "Chlorine": {
+            "reading": "3 ppm",
+            "status": "warning",
+        },
+        "Hydrogen Sulfide": {
+            "reading": "25 ppm",
+            "status": "danger",
+        }
+    }
+
+    data = gas_data.get(gas_name, {
+        "reading": "Unknown",
+        "status": "normal"
+    })
+
+    return render_template("gas.html", gas=gas_name, data=data)
 
 if __name__ == "__main__":
     app.run(debug=True)

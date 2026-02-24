@@ -124,3 +124,13 @@ header {
 .status {
     font-weight: bold;
 }
+
+h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.card h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 6px;
+}
