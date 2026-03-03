@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Immediate Alerts - Aeris.AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <div><strong>Aeris.AI</strong></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/rooms">Rooms</a>
+        <a href="/alerts">Alerts</a>
+        <a href="/immediate">Immediate</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1 style="margin-bottom: 30px;">🚨 Immediate Critical Alerts</h1>
+
+    <!-- HIGH PRIORITY ALERT -->
+    <div class="card" style="border-left: 6px solid #ff4d4d;">
+        <h2 class="red">Carbon Monoxide Spike - Kitchen</h2>
+        <p><strong>Current Reading:</strong> 45 ppm</p>
+        <p><strong>Status:</strong> HIGH RISK</p>
+        <p><strong>Detected:</strong> 3 minutes ago</p>
+        <p>AI prediction indicates dangerous levels may continue rising.</p>
+        <a href="/room/Kitchen" class="button">View Room</a>
+    </div>
+
+    <!-- SECOND PRIORITY ALERT -->
+    <div class="card" style="border-left: 6px solid #ff9900;">
+        <h2 class="orange">Hydrogen Sulfide Increase - Garage</h2>
+        <p><strong>Current Reading:</strong> 28 ppm</p>
+        <p><strong>Status:</strong> MODERATE RISK</p>
+        <p><strong>Detected:</strong> 12 minutes ago</p>
+        <p>Monitor ventilation and inspect potential leak sources.</p>
+        <a href="/room/Garage" class="button">View Room</a>
+    </div>
+
+    <!-- SYSTEM STATUS -->
+    <div class="card">
+        <h2>System Status</h2>
+        <p>Total Active Alerts: <span class="red">2</span></p>
+        <p>Last System Scan: 1 minute ago</p>
+        <p>AI Monitoring: <span class="green">Active</span></p>
+    </div>
+
+</div>
+
+</body>
+</html>
