@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Aeris AI</title>
+    <title>Aeris.AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<header>Aeris AI</header>
+<div class="navbar">
+    <div><strong>Aeris.AI</strong></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/rooms">Rooms</a>
+        <a href="/alerts">Alerts</a>
+        <a href="/immediate">Immediate</a>
+    </div>
+</div>
 
-<div class="container">
-    <a href="/rooms" class="button">Start Monitoring</a>
+<div class="hero">
+    <div>
+        <div class="hero-title">AERIS.AI</div>
+        <div class="hero-subtitle">
+            Intelligent Gas Monitoring & Leak Prediction
+        </div>
+    </div>
+
+    <a href="/rooms" class="start-button">Start Monitoring</a>
 </div>
 
 </body>
 </html>
-
-

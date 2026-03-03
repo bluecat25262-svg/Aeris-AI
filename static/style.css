@@ -1,22 +1,78 @@
 /* ===== GLOBAL ===== */
 
 body {
-    background-color: #0d0d0d;
+    background-color: #0b0b0b;
     color: #e6e6e6;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
 }
 
-header {
+/* ===== NAVIGATION ===== */
+
+.navbar {
     background-color: #111;
-    padding: 20px 30px;
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #1f1f1f;
 }
 
-/* Center content nicely */
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #aaa;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.nav-links a:hover {
+    color: #00ff7f;
+}
+
+/* ===== LANDING PAGE ===== */
+
+.hero {
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-top: 120px;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    color: #888;
+    margin-top: 10px;
+}
+
+.start-button {
+    margin-bottom: 60px;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #00d26a;
+    color: black;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.start-button:hover {
+    background-color: #00ff7f;
+}
+
+/* ===== CONTAINER ===== */
+
 .container {
     max-width: 900px;
     margin: 40px auto;
@@ -31,97 +87,36 @@ header {
     margin-bottom: 20px;
     border-radius: 12px;
     border: 1px solid #1f1f1f;
-    transition: all 0.2s ease;
+    transition: 0.2s;
 }
 
 .card:hover {
     background-color: #1d1d1d;
-    transform: translateY(-2px);
 }
-
-/* ===== SYSTEM BOX ===== */
-
-.system-box {
-    background-color: #141414;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #222;
-    margin-bottom: 30px;
-}
-
-/* ===== BUTTONS ===== */
-
-.button {
-    display: inline-block;
-    padding: 12px 22px;
-    background-color: #00d26a;
-    color: black;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: 0.2s ease;
-}
-
-.button:hover {
-    background-color: #00ff7f;
-}
-
-/* ===== STATUS COLORS ===== */
-
-.green {
-    color: #00d26a;
-    font-weight: 600;
-}
-
-.orange {
-    color: #ff9900;
-    font-weight: 600;
-}
-
-.red {
-    color: #ff4d4d;
-    font-weight: 600;
-}
-
-.status {
-    margin-top: 5px;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-}
-
-/* ===== HEADINGS ===== */
-
-h2 {
-    margin-top: 0;
-    font-size: 18px;
-    font-weight: 600;
-    border-bottom: 1px solid #222;
-    padding-bottom: 8px;
-}
-
-/* ===== ROOM CARDS (Better Layout) ===== */
 
 .room-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-decoration: none;
+    color: white;
 }
 
-.room-name {
-    font-size: 18px;
+.green { color: #00d26a; font-weight: 600; }
+.orange { color: #ff9900; font-weight: 600; }
+.red { color: #ff4d4d; font-weight: 600; }
+
+.button {
+    display: inline-block;
+    padding: 10px 18px;
+    background-color: #00d26a;
+    color: black;
+    border-radius: 6px;
+    text-decoration: none;
     font-weight: 600;
+    margin-top: 10px;
 }
 
-/* ===== TREND GRAPH PLACEHOLDER ===== */
-
-.graph-placeholder {
-    height: 140px;
-    background: linear-gradient(135deg, #1a1a1a, #111);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #555;
-    font-size: 14px;
-    border: 1px solid #222;
+.button:hover {
+    background-color: #00ff7f;
 }
