@@ -9,7 +9,7 @@ app = Flask(__name__)
 # DATABASE CONNECTION
 # ---------------------------------
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = "postgresql://aeris_db_plyi_user:9kKFF5gHTAwuUfevT02OVJMqrgWdplVS@dpg-d6o9flf5gffc73eq89e0-a.oregon-postgres.render.com/aeris_db_plyi"
 API_KEY = os.environ.get("API_KEY")
 
 def get_db_connection():
