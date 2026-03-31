@@ -39,6 +39,14 @@ def init_db():
 
 init_db()
 
+rooms_data = [
+    {"name": "Kitchen", "risk": "danger"},
+    {"name": "Garage", "risk": "warning"},
+    {"name": "Bedroom", "risk": "normal"},
+    {"name": "Basement", "risk": "normal"},
+]
+
+
 # ---------------------------------
 # ROUTES
 # ---------------------------------
@@ -49,7 +57,7 @@ def home():
 
 @app.route("/rooms")
 def rooms():
-    return render_template("rooms.html")
+    return render_template("rooms.html", rooms=rooms_data)
 
 @app.route("/alerts")
 def alerts():
@@ -103,3 +111,36 @@ def upload_data():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+import random
+
+@app.route("/generate")
+def generate_fake_data():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    rooms = ["Kitchen", "Garage", "Bedroom", "Basement"]
+    gases = ["Carbon Monoxide", "Chlorine", "Hydrogen Sulfide"]
+
+    for _ in range(10):  # generate 10 fake readings
+        room = random.choice(rooms)
+        gas = random.choice(gases)
+        reading = random.randint(5, 60)
+
+        if reading > 40:
+            status = "danger"
+        elif reading > 20:
+            status = "warning"
+        else:
+            status = "normal"
+
+        cur.execute("""
+            INSERT INTO readings (room, gas, reading, status, timestamp)
+            VALUES (%s, %s, %s, %s, NOW());
+        """, (room, gas, reading, status))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return "Fake data generated!"
