@@ -1,4 +1,5 @@
 import os
+import random
 from flask import Flask, render_template, request, jsonify
 import psycopg2
 from datetime import datetime
@@ -108,12 +109,6 @@ def upload_data():
     conn.close()
 
     return jsonify({"message": "Data stored"}), 200
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-import random
-
 @app.route("/generate")
 def generate_fake_data():
     conn = get_db_connection()
@@ -144,3 +139,8 @@ def generate_fake_data():
     conn.close()
 
     return "Fake data generated!"
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
