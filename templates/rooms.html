@@ -27,8 +27,7 @@
     </div>
 
     {% for room in rooms %}
-    <a href="/room/{{ room.name }}" class="room-card">
-        <div class="room-left">
+        <a href="{{ url_for('room_detail', room_name=room.name) }}" class="card room-card">        <div class="room-left">
             <h3>{{ room.name }}</h3>
             <p>Sensors Active</p>
         </div>

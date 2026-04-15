@@ -31,6 +31,12 @@ def init_db():
             gas VARCHAR(100),
             reading FLOAT,
             status VARCHAR(20),
+            sensor_id VARCHAR(50),
+            temperature FLOAT,
+            humidity FLOAT,
+            pressure FLOAT,
+            air_quality VARCHAR(50),
+            screenshot_path VARCHAR(255),
             timestamp TIMESTAMP
         );
     """)
@@ -39,6 +45,10 @@ def init_db():
     conn.close()
 
 init_db()
+
+@app.route("/room/<room_name>")
+def room_detail(room_name):
+    return render_template("room_detail.html", room=room_name)
 
 rooms_data = [
     {"name": "Kitchen", "risk": "danger"},
@@ -69,10 +79,10 @@ def immediate():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("""
-        SELECT room, gas, reading, status, timestamp
+        SELECT room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, screenshot_path, timestamp
         FROM readings
         ORDER BY timestamp DESC
-        LIMIT 5;
+        LIMIT 10;
     """)
     alerts = cur.fetchall()
     cur.close()
@@ -97,30 +107,43 @@ def upload_data():
     gas = data.get("gas")
     reading = data.get("reading")
     status = data.get("status")
+    sensor_id = data.get("sensor_id")
+    temperature = data.get("temperature")
+    humidity = data.get("humidity")
+    pressure = data.get("pressure")
+    air_quality = data.get("air_quality")
+    screenshot_path = data.get("screenshot_path")
 
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("""
-        INSERT INTO readings (room, gas, reading, status, timestamp)
-        VALUES (%s, %s, %s, %s, %s);
-    """, (room, gas, reading, status, datetime.utcnow()))
+        INSERT INTO readings (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, screenshot_path, timestamp)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+    """, (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, screenshot_path, datetime.utcnow()))
     conn.commit()
     cur.close()
     conn.close()
 
     return jsonify({"message": "Data stored"}), 200
+
 @app.route("/generate")
 def generate_fake_data():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    rooms = ["Kitchen", "Garage", "Bedroom", "Basement"]
+    rooms = ["Processing Area C", "Storage Area B", "Floor #01"]
     gases = ["Carbon Monoxide", "Chlorine", "Hydrogen Sulfide"]
+    sensors = ["SEN-C12", "SEN-C08", "SEN-804"]
 
-    for _ in range(10):  # generate 10 fake readings
+    for _ in range(15):
         room = random.choice(rooms)
         gas = random.choice(gases)
-        reading = random.randint(5, 60)
+        reading = round(random.uniform(5, 60), 1)
+        sensor_id = random.choice(sensors)
+        temperature = random.randint(65, 75)
+        humidity = random.randint(30, 60)
+        pressure = random.randint(1010, 1015)
+        air_quality = random.choice(["Normal", "Moderate", "Poor"])
 
         if reading > 40:
             status = "danger"
@@ -130,9 +153,9 @@ def generate_fake_data():
             status = "normal"
 
         cur.execute("""
-            INSERT INTO readings (room, gas, reading, status, timestamp)
-            VALUES (%s, %s, %s, %s, NOW());
-        """, (room, gas, reading, status))
+            INSERT INTO readings (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, screenshot_path, timestamp)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW());
+        """, (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, None))
 
     conn.commit()
     cur.close()
