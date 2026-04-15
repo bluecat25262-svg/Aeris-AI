@@ -1,7 +1,7 @@
 import os
 import random
 from flask import Flask, render_template, request, jsonify
-import psycopg2
+import sqlite3
 from datetime import datetime
 
 app = Flask(__name__)
@@ -10,11 +10,11 @@ app = Flask(__name__)
 # DATABASE CONNECTION
 # ---------------------------------
 
-DATABASE_URL = "postgresql://aeris_db_plyi_user:9kKFF5gHTAwuUfevT02OVJMqrgWdplVS@dpg-d6o9flf5gffc73eq89e0-a.oregon-postgres.render.com/aeris_db_plyi"
-API_KEY = os.environ.get("API_KEY")
+DATABASE_URL = "readings.db"  # Local SQLite file
 
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL)
+    conn = sqlite3.connect(DATABASE_URL)
+    conn.row_factory = sqlite3.Row  # For dict-like access
     return conn
 
 # ---------------------------------
@@ -26,18 +26,18 @@ def init_db():
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE IF NOT EXISTS readings (
-            id SERIAL PRIMARY KEY,
-            room VARCHAR(100),
-            gas VARCHAR(100),
-            reading FLOAT,
-            status VARCHAR(20),
-            sensor_id VARCHAR(50),
-            temperature FLOAT,
-            humidity FLOAT,
-            pressure FLOAT,
-            air_quality VARCHAR(50),
-            screenshot_path VARCHAR(255),
-            timestamp TIMESTAMP
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            room TEXT,
+            gas TEXT,
+            reading REAL,
+            status TEXT,
+            sensor_id TEXT,
+            temperature REAL,
+            humidity REAL,
+            pressure REAL,
+            air_quality TEXT,
+            screenshot_path TEXT,
+            timestamp TEXT
         );
     """)
     conn.commit()
@@ -56,7 +56,6 @@ rooms_data = [
     {"name": "Bedroom", "risk": "normal"},
     {"name": "Basement", "risk": "normal"},
 ]
-
 
 # ---------------------------------
 # ROUTES
@@ -98,7 +97,7 @@ def immediate():
 def upload_data():
     auth_key = request.headers.get("x-api-key")
 
-    if auth_key != API_KEY:
+    if auth_key != os.environ.get("API_KEY"):
         return jsonify({"error": "Unauthorized"}), 401
 
     data = request.json
@@ -118,8 +117,8 @@ def upload_data():
     cur = conn.cursor()
     cur.execute("""
         INSERT INTO readings (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, screenshot_path, timestamp)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-    """, (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, screenshot_path, datetime.utcnow()))
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    """, (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, screenshot_path, datetime.utcnow().isoformat()))
     conn.commit()
     cur.close()
     conn.close()
@@ -154,8 +153,8 @@ def generate_fake_data():
 
         cur.execute("""
             INSERT INTO readings (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, screenshot_path, timestamp)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW());
-        """, (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, None))
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """, (room, gas, reading, status, sensor_id, temperature, humidity, pressure, air_quality, None, datetime.utcnow().isoformat()))
 
     conn.commit()
     cur.close()
