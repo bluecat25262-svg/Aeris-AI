@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aeris.AI - Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Aeris.AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
 </head>
 <body>
+<div class="phone-shell">
+    <div class="app-frame">
+        <div class="app-screen">
+            <div class="top-bar">
+                <span class="top-badge">Powered by AI</span>
+            </div>
 
-<div class="navbar">
-    <div><strong>Aeris.AI</strong></div>
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/rooms">Rooms</a>
-        <a href="/alerts">Alerts</a>
-        <a href="/immediate">Immediate</a>
+            <div class="hero-panel">
+                <div class="hero-graphic"></div>
+                <h1>AI-Driven Methane Detection</h1>
+                <p>For a safer tomorrow.</p>
+            </div>
+
+            <div class="cta-panel">
+                <a class="primary-button" href="/rooms">GET STARTED FOR FREE</a>
+                <a class="text-button" href="/about">I want to know more</a>
+            </div>
+        </div>
     </div>
 </div>
-
-<div class="hero">
-    <h1 class="hero-title">Aeris.AI</h1>
-    <p class="hero-subtitle">Advanced Gas Detection & Monitoring System</p>
-    <a href="/rooms" class="start-button">Start Monitoring</a>
-</div>
-
 </body>
 </html>

@@ -1,38 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aeris.AI - Rooms</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Aeris.AI - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
 </head>
 <body>
+<div class="phone-shell">
+    <div class="app-frame">
+        <div class="app-screen">
+            <div class="screen-header">
+                <div class="screen-title">
+                    <span class="back-arrow">←</span>
+                    <div>
+                        <p class="subtitle">Statistics</p>
+                        <h1>AERIS.AI</h1>
+                    </div>
+                </div>
+                <div class="icon-badge"></div>
+            </div>
 
-<div class="navbar">
-    <div><strong>Aeris.AI</strong></div>
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/rooms">Rooms</a>
-        <a href="/alerts">Alerts</a>
-        <a href="/immediate">Immediate</a>
+            <div class="grid cards-grid">
+                <article class="metric-card">
+                    <span>Active Sensors</span>
+                    <strong>128</strong>
+                    <small>+3</small>
+                </article>
+
+                <article class="metric-card">
+                    <span>System Health</span>
+                    <strong>98%</strong>
+                    <small>-2%</small>
+                </article>
+
+                <article class="metric-card">
+                    <span>Active Alerts</span>
+                    <strong>5</strong>
+                    <small>+2</small>
+                </article>
+
+                <article class="metric-card">
+                    <span>Monthly Leaks</span>
+                    <strong>12</strong>
+                    <small>-3</small>
+                </article>
+            </div>
+
+            <section class="factory-panel">
+                <div class="panel-header">
+                    <h2>Factory Map View</h2>
+                    <a href="/immediate">View all</a>
+                </div>
+
+                <div class="map-panel">
+                    <div class="floor-label">Floor #01</div>
+                    <div class="map-row">
+                        <div class="room-card-mini">Room A<div class="dot green"></div></div>
+                        <div class="room-card-mini">Room B<div class="dot yellow"></div></div>
+                    </div>
+                    <div class="map-row">
+                        <div class="room-card-mini">Room C<div class="dot red"></div></div>
+                        <div class="room-card-mini">Room D<div class="dot green"></div></div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 </div>
-
-<div class="container">
-    <h1 class="page-title">Room Sensors</h1>
-
-    {% for room in rooms %}
-    <a href="/room/{{ room.name }}" class="card room-card">
-        <div class="room-left">
-            <h3>{{ room.name }}</h3>
-            <p>Risk Level: {{ room.risk }}</p>
-        </div>
-        <div class="room-right">
-            <span class="status {{ room.risk }}">{{ room.risk.upper() }}</span>
-        </div>
-    </a>
-    {% endfor %}
-</div>
-
 </body>
 </html>

@@ -1,58 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aeris.AI - Recent Alerts</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Aeris.AI - Sensors</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
 </head>
 <body>
-
-<div class="navbar">
-    <div><strong>Aeris.AI</strong></div>
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/rooms">Rooms</a>
-        <a href="/alerts">Alerts</a>
-        <a href="/immediate">Immediate</a>
-    </div>
-</div>
-
-<div class="container">
-    <h1 class="page-title">Recent Alerts</h1>
-
-    {% if alerts %}
-        {% for alert in alerts %}
-        <div class="card alert-card {{ alert[3] }}">
-            <div class="alert-header">
-                <div>
-                    <h2 class="alert-location">{{ alert[0] }}</h2>
-                    <p class="alert-sensor">Sensor: {{ alert[4] }}</p>
+<div class="phone-shell">
+    <div class="app-frame">
+        <div class="app-screen">
+            <div class="screen-header">
+                <div class="screen-title">
+                    <span class="back-arrow">←</span>
+                    <div>
+                        <p class="subtitle">Sensor id - SEN-C12</p>
+                        <h1>4.4 PPM</h1>
+                    </div>
                 </div>
-                <span class="status-badge {{ alert[3] }}">{{ alert[3].upper() }}</span>
-            </div>
-            
-            <div class="alert-content">
-                <p><strong>Gas Type:</strong> {{ alert[1] }}</p>
-                <p><strong>Reading:</strong> <span class="reading-value">{{ alert[2] }} ppm</span></p>
-                <p><strong>Temperature:</strong> {{ alert[5] }}°F</p>
-                <p><strong>Humidity:</strong> {{ alert[6] }}%</p>
-                <p><strong>Pressure:</strong> {{ alert[7] }} HPA</p>
-                <p><strong>Air Quality:</strong> {{ alert[8] }}</p>
-                <p class="alert-time">{{ alert[10] }}</p>
+                <div class="status-pill active">Active</div>
             </div>
 
-            {% if alert[9] %}
-            <img src="{{ url_for('static', filename=alert[9]) }}" alt="Alert screenshot" class="alert-screenshot">
-            {% endif %}
+            <div class="chart-card">
+                <div class="chart-labels">
+                    <span class="active-tab">1D</span>
+                    <span>1W</span>
+                    <span>1M</span>
+                    <span>1Y</span>
+                </div>
+                <div class="chart-graphic"></div>
+            </div>
+
+            <div class="panel-row">
+                <div class="mini-card">Temperature<span>72°F</span></div>
+                <div class="mini-card">Humidity<span>45%</span></div>
+            </div>
+
+            <div class="mini-card full">Pressure<span>1013 HPA</span></div>
+            <div class="mini-card full">Air Quality<span>Moderate</span></div>
         </div>
-        {% endfor %}
-    {% else %}
-    <div class="card">
-        <p>No alerts recorded yet. Visit <a href="/generate">/generate</a> to add test data.</p>
     </div>
-    {% endif %}
 </div>
-
 </body>
 </html>

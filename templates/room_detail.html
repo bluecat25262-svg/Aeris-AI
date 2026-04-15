@@ -1,68 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Aeris.AI - {{ room }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
 </head>
 <body>
+<div class="phone-shell">
+    <div class="app-frame">
+        <div class="app-screen">
+            <div class="screen-header">
+                <div class="screen-title">
+                    <span class="back-arrow">←</span>
+                    <div>
+                        <p class="subtitle">Floor #01</p>
+                        <h1>{{ room }}</h1>
+                    </div>
+                </div>
+            </div>
 
-<div class="navbar">
-    <div><strong>Aeris.AI</strong></div>
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/rooms">Rooms</a>
-        <a href="/alerts">Alerts</a>
-        <a href="/immediate">Immediate</a>
+            <div class="map-panel compact">
+                <div class="floor-label">Room A</div>
+                <div class="map-dots">
+                    <span class="dot green"></span>
+                    <span class="dot green"></span>
+                    <span class="dot yellow"></span>
+                </div>
+            </div>
+
+            <div class="panel-row">
+                <div class="mini-card">Temperature<span>72°F</span></div>
+                <div class="mini-card">Humidity<span>45%</span></div>
+            </div>
+
+            <div class="mini-card full">Pressure<span>1013 HPA</span></div>
+            <div class="mini-card full">Air Quality<span>Moderate</span></div>
+        </div>
     </div>
 </div>
-
-<div class="container">
-    <h1 class="page-title">{{ room }} Sensors</h1>
-
-    <div class="card">
-        <h2>Environmental Data</h2>
-        <p><strong>Temperature:</strong> 72°F</p>
-        <p><strong>Humidity:</strong> 45%</p>
-        <p><strong>Pressure:</strong> 1013 HPA</p>
-        <p><strong>Air Quality:</strong> Normal</p>
-    </div>
-
-    <a href="/gas/Carbon Monoxide" class="card room-card">
-        <div class="room-left">
-            <h3>Carbon Monoxide</h3>
-            <p>Safe</p>
-        </div>
-        <div class="room-right">
-            <span class="status green">NORMAL</span>
-        </div>
-    </a>
-
-    <a href="/gas/Chlorine" class="card room-card">
-        <div class="room-left">
-            <h3>Chlorine</h3>
-            <p>Moderate</p>
-        </div>
-        <div class="room-right">
-            <span class="status orange">WARNING</span>
-        </div>
-    </a>
-
-    <a href="/gas/Hydrogen Sulfide" class="card room-card">
-        <div class="room-left">
-            <h3>Hydrogen Sulfide</h3>
-            <p>High</p>
-        </div>
-        <div class="room-right">
-            <span class="status red">DANGER</span>
-        </div>
-    </a>
-
-    <div class="back-button">
-        <a href="/rooms">← Back to Rooms</a>
-    </div>
-</div>
-
 </body>
 </html>
