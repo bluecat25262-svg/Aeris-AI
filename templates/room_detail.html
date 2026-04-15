@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ room }} Sensors</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aeris.AI - {{ room }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -16,28 +18,50 @@
     </div>
 </div>
 
-<header>{{ room }} - Sensor Details</header>
-
 <div class="container">
+    <h1 class="page-title">{{ room }} Sensors</h1>
 
     <div class="card">
-        Temperature: 72°F<br>
-        Humidity: 45%<br>
-        Pressure: Normal
+        <h2>Environmental Data</h2>
+        <p><strong>Temperature:</strong> 72°F</p>
+        <p><strong>Humidity:</strong> 45%</p>
+        <p><strong>Pressure:</strong> 1013 HPA</p>
+        <p><strong>Air Quality:</strong> Normal</p>
     </div>
 
-    <a href="/gas/Carbon Monoxide" class="card green">
-        Carbon Monoxide — Safe
+    <a href="/gas/Carbon Monoxide" class="card room-card">
+        <div class="room-left">
+            <h3>Carbon Monoxide</h3>
+            <p>Safe</p>
+        </div>
+        <div class="room-right">
+            <span class="status green">NORMAL</span>
+        </div>
     </a>
 
-    <a href="/gas/Chlorine" class="card orange">
-        Chlorine — Moderate
+    <a href="/gas/Chlorine" class="card room-card">
+        <div class="room-left">
+            <h3>Chlorine</h3>
+            <p>Moderate</p>
+        </div>
+        <div class="room-right">
+            <span class="status orange">WARNING</span>
+        </div>
     </a>
 
-    <a href="/gas/Hydrogen Sulfide" class="card red">
-        Hydrogen Sulfide — High
+    <a href="/gas/Hydrogen Sulfide" class="card room-card">
+        <div class="room-left">
+            <h3>Hydrogen Sulfide</h3>
+            <p>High</p>
+        </div>
+        <div class="room-right">
+            <span class="status red">DANGER</span>
+        </div>
     </a>
 
+    <div class="back-button">
+        <a href="/rooms">← Back to Rooms</a>
+    </div>
 </div>
 
 </body>

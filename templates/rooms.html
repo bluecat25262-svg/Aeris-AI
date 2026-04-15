@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Room Sensors - Aeris AI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aeris.AI - Rooms</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    
+
 <div class="navbar">
     <div><strong>Aeris.AI</strong></div>
     <div class="nav-links">
@@ -16,34 +18,20 @@
     </div>
 </div>
 
-<header>Room Sensors</header>
-
 <div class="container">
-
-    <div class="system-health">
-        <h2>System Health Overview</h2>
-        <p>Active Sensors: <span class="green">11</span></p>
-        <p>Inactive Sensors: <span class="red">1</span></p>
-    </div>
+    <h1 class="page-title">Room Sensors</h1>
 
     {% for room in rooms %}
-        <a href="{{ url_for('room_detail', room_name=room.name) }}" class="card room-card">        <div class="room-left">
+    <a href="/room/{{ room.name }}" class="card room-card">
+        <div class="room-left">
             <h3>{{ room.name }}</h3>
-            <p>Sensors Active</p>
+            <p>Risk Level: {{ room.risk }}</p>
         </div>
-
         <div class="room-right">
-            {% if room.risk == "danger" %}
-                <span class="status red">HIGH RISK</span>
-            {% elif room.risk == "warning" %}
-                <span class="status orange">MODERATE RISK</span>
-            {% else %}
-                <span class="status green">NORMAL</span>
-            {% endif %}
+            <span class="status {{ room.risk }}">{{ room.risk.upper() }}</span>
         </div>
     </a>
     {% endfor %}
-
 </div>
 
 </body>
