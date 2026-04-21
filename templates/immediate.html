@@ -3,41 +3,80 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Aeris.AI - Sensors</title>
+    <title>Aeris.AI - Sensor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
 </head>
 <body>
 <div class="phone-shell">
     <div class="app-frame">
         <div class="app-screen">
-            <div class="screen-header">
-                <div class="screen-title">
-                    <span class="back-arrow">←</span>
-                    <div>
-                        <p class="subtitle">Sensor id - SEN-C12</p>
-                        <h1>4.4 PPM</h1>
+
+            <!-- BACK HEADER -->
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <div class="back-header">
+                        <a class="back-btn" href="/rooms">←</a>
+                    </div>
+                    <div class="sensor-subtitle">Sensor id - SEN-C12</div>
+                    <div class="sensor-reading">4.4 PPM</div>
+                </div>
+                <span class="active-pill">Active</span>
+            </div>
+
+            <!-- WAVEFORM CHART -->
+            <div class="chart-area">
+                <svg class="waveform" viewBox="0 0 340 80" fill="none" preserveAspectRatio="none">
+                    <!-- dashed threshold line -->
+                    <line x1="0" y1="28" x2="340" y2="28" stroke="#ff5c2e" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+                    <!-- wave -->
+                    <polyline
+                        points="0,60 20,52 40,58 60,45 80,50 100,38 120,44 140,35 160,42 180,30 200,38 220,32 240,40 260,30 280,36 300,28 320,34 340,28"
+                        stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="chart-tabs">
+                    <span class="chart-tab active">1D</span>
+                    <span class="chart-tab">1W</span>
+                    <span class="chart-tab">1M</span>
+                    <span class="chart-tab">1Y</span>
+                    <span class="chart-tab">5Y</span>
+                    <span class="chart-tab">MAX</span>
+                </div>
+            </div>
+
+            <!-- FLOOR MAP -->
+            <div class="map-panel">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="floor-label">Floor #01</span>
+                    <div class="map-legend">
+                        <div class="legend-item"><span class="dot green"></span>Normal</div>
+                        <div class="legend-item"><span class="dot yellow"></span>Warning</div>
+                        <div class="legend-item"><span class="dot red"></span>Active Leak</div>
                     </div>
                 </div>
-                <div class="status-pill active">Active</div>
-            </div>
-
-            <div class="chart-card">
-                <div class="chart-labels">
-                    <span class="active-tab">1D</span>
-                    <span>1W</span>
-                    <span>1M</span>
-                    <span>1Y</span>
+                <div class="room-mini" style="min-height:100px;">
+                    <span>Room - A</span>
+                    <div class="room-dots-field" style="gap:16px; padding:12px 8px;">
+                        <span class="dot green"></span>
+                        <span class="dot green" style="margin-left:20px;"></span>
+                        <span class="dot green" style="margin-left:30px; margin-top:12px;"></span>
+                    </div>
                 </div>
-                <div class="chart-graphic"></div>
             </div>
 
-            <div class="panel-row">
-                <div class="mini-card">Temperature<span>72°F</span></div>
-                <div class="mini-card">Humidity<span>45%</span></div>
+            <!-- ENVIRONMENTAL FACTORS -->
+            <div class="env-section-header">
+                <span class="env-label">Environmental Factors</span>
+                <span class="env-label">Today</span>
+            </div>
+            <div class="env-grid">
+                <div class="env-row">
+                    <div class="env-card">Temperature <strong>72°F</strong></div>
+                    <div class="env-card">Humidity <strong>45%</strong></div>
+                </div>
+                <div class="env-card">Pressure <strong>1013 HPA</strong></div>
+                <div class="env-card">Air Quality <strong>Moderate</strong></div>
             </div>
 
-            <div class="mini-card full">Pressure<span>1013 HPA</span></div>
-            <div class="mini-card full">Air Quality<span>Moderate</span></div>
         </div>
     </div>
 </div>

@@ -10,61 +10,127 @@
 <div class="phone-shell">
     <div class="app-frame">
         <div class="app-screen">
-            <div class="screen-header">
-                <div class="screen-title">
-                    <span class="back-arrow">←</span>
-                    <div>
-                        <p class="subtitle">Statistics</p>
-                        <h1>AERIS.AI</h1>
-                    </div>
+
+            <!-- TOP ROW -->
+            <div class="top-row">
+                <div class="brand-row">
+                    <div class="brand-avatar">M</div>
+                    <span class="brand-name">AERIS.AI</span>
                 </div>
-                <div class="icon-badge"></div>
+                <div class="bell-btn">🔔</div>
             </div>
 
-            <div class="grid cards-grid">
-                <article class="metric-card">
-                    <span>Active Sensors</span>
-                    <strong>128</strong>
-                    <small>+3</small>
-                </article>
-
-                <article class="metric-card">
-                    <span>System Health</span>
-                    <strong>98%</strong>
-                    <small>-2%</small>
-                </article>
-
-                <article class="metric-card">
-                    <span>Active Alerts</span>
-                    <strong>5</strong>
-                    <small>+2</small>
-                </article>
-
-                <article class="metric-card">
-                    <span>Monthly Leaks</span>
-                    <strong>12</strong>
-                    <small>-3</small>
-                </article>
+            <!-- STATS -->
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="section-label">Statistics</span>
+                <span class="section-label">Today</span>
             </div>
 
-            <section class="factory-panel">
-                <div class="panel-header">
-                    <h2>Factory Map View</h2>
-                    <a href="/immediate">View all</a>
+            <div class="stats-grid">
+                <!-- Active Sensors -->
+                <div class="stat-card">
+                    <span class="stat-label">Active Sensors</span>
+                    <div class="stat-row">
+                        <span class="stat-value">128</span>
+                        <span class="stat-trend up">+3
+                            <svg class="sparkline" width="44" height="22" viewBox="0 0 44 22" fill="none">
+                                <polyline points="0,18 8,14 16,16 24,10 32,12 44,6" stroke="#3ddc84" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
                 </div>
 
-                <div class="map-panel">
-                    <div class="floor-label">Floor #01</div>
-                    <div class="map-row">
-                        <div class="room-card-mini">Room A<div class="dot green"></div></div>
-                        <div class="room-card-mini">Room B<div class="dot yellow"></div></div>
-                    </div>
-                    <div class="map-row">
-                        <div class="room-card-mini">Room C<div class="dot red"></div></div>
-                        <div class="room-card-mini">Room D<div class="dot green"></div></div>
+                <!-- System Health -->
+                <div class="stat-card">
+                    <span class="stat-label">System Health</span>
+                    <div class="stat-row">
+                        <span class="stat-value">98%</span>
+                        <span class="stat-trend down">-2%
+                            <svg class="sparkline" width="44" height="22" viewBox="0 0 44 22" fill="none">
+                                <polyline points="0,6 8,8 16,7 24,10 32,12 44,17" stroke="#ff5c2e" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
                     </div>
                 </div>
-            </section>
+
+                <!-- Active Alerts -->
+                <div class="stat-card">
+                    <span class="stat-label">Active Alerts</span>
+                    <div class="stat-row">
+                        <span class="stat-value">5</span>
+                        <span class="stat-trend down">+2
+                            <svg class="sparkline" width="44" height="22" viewBox="0 0 44 22" fill="none">
+                                <polyline points="0,16 8,12 16,14 24,9 32,13 44,7" stroke="#ff5c2e" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Monthly Leaks -->
+                <div class="stat-card">
+                    <span class="stat-label">Monthly Leaks</span>
+                    <div class="stat-row">
+                        <span class="stat-value">12</span>
+                        <span class="stat-trend up">-3
+                            <svg class="sparkline" width="44" height="22" viewBox="0 0 44 22" fill="none">
+                                <polyline points="0,6 8,10 16,8 24,13 32,11 44,16" stroke="#3ddc84" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FACTORY MAP -->
+            <div class="section-header">
+                <span class="section-title">Factory Map View</span>
+                <a class="view-all" href="/immediate">View all</a>
+            </div>
+
+            <div class="map-panel">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="floor-label">Floor #01</span>
+                    <div class="map-legend">
+                        <div class="legend-item"><span class="dot green"></span>Normal</div>
+                        <div class="legend-item"><span class="dot yellow"></span>Warning</div>
+                        <div class="legend-item"><span class="dot red"></span>Active Leak</div>
+                    </div>
+                </div>
+
+                <div class="rooms-grid">
+                    <div class="room-mini">
+                        <span>Room - A</span>
+                        <div class="room-dots-field">
+                            <span class="dot green"></span>
+                            <span class="dot green"></span>
+                            <span class="dot green"></span>
+                        </div>
+                    </div>
+                    <div class="room-mini">
+                        <span>Room - B</span>
+                        <div class="room-dots-field">
+                            <span class="dot green"></span>
+                            <span class="dot yellow"></span>
+                        </div>
+                    </div>
+                    <div class="room-mini">
+                        <span>Room - C</span>
+                        <div class="room-dots-field">
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                    </div>
+                    <div class="room-mini">
+                        <span>Room - D</span>
+                        <div class="room-dots-field">
+                            <span class="dot green"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="floor-row">Floor #02</div>
+            <div class="floor-row">Floor #03</div>
+
         </div>
     </div>
 </div>

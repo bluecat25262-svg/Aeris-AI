@@ -10,37 +10,97 @@
 <div class="phone-shell">
     <div class="app-frame">
         <div class="app-screen">
-            <div class="screen-header">
-                <div class="screen-title">
-                    <span class="back-arrow">←</span>
-                    <div>
-                        <p class="subtitle">Recent alerts</p>
-                        <h1>Alerts</h1>
+
+            <!-- BACK HEADER -->
+            <div class="back-header">
+                <a class="back-btn" href="/rooms">←</a>
+                <span class="page-title">Recent alerts</span>
+            </div>
+
+            <!-- RECENT ALERTS (Figma 5 & 6 style) -->
+            <div style="display:flex; flex-direction:column; gap:10px;">
+
+                <div class="alert-item">
+                    <div class="alert-row-top">
+                        <div class="alert-area">
+                            <span class="dot red"></span>
+                            Processing Area C
+                        </div>
+                        <span class="alert-time">15 mins ago</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span class="alert-sensor">Sensor: SEN-C12</span>
+                        <span class="alert-reading">Reading: 72 ppm</span>
                     </div>
                 </div>
+
+                <div class="alert-item">
+                    <div class="alert-row-top">
+                        <div class="alert-area">
+                            <span class="dot red"></span>
+                            Processing Area C
+                        </div>
+                        <span class="alert-time">18 mins ago</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span class="alert-sensor">Sensor: SEN-C08</span>
+                        <span class="alert-reading">Reading: 68 ppm</span>
+                    </div>
+                </div>
+
+                <div class="alert-item">
+                    <div class="alert-row-top">
+                        <div class="alert-area">
+                            <span class="dot red"></span>
+                            Storage Area B
+                        </div>
+                        <span class="alert-time">35 mins ago</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span class="alert-sensor">Sensor: SEN-B04</span>
+                        <span class="alert-reading">Reading: 28 ppm</span>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="container-list">
-                <article class="alert-card red">
-                    <div class="alert-title">Potential Leak Risk in Area B</div>
-                    <p>Based on pressure patterns, a leak may develop in the next 24–48 hours</p>
-                </article>
+            <!-- PREDICTIVE / MAINTENANCE ALERTS (Figma 4 style) -->
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
 
-                <article class="alert-card yellow">
-                    <div class="alert-title">Sensor Maintenance Required</div>
-                    <p>4 sensors in Room A due for calibration within 7 days</p>
-                </article>
+                <div class="alert-card-v2">
+                    <div class="alert-icon">⏱</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Potential Leak Risk in Area B</div>
+                        <div class="alert-desc">Based on pressure patterns, a leak may develop in the next 24–48 hours</div>
+                    </div>
+                </div>
 
-                <article class="alert-card yellow">
-                    <div class="alert-title">Sensor Maintenance Required</div>
-                    <p>2 sensors in Room B due for calibration within 7 days</p>
-                </article>
+                <div class="alert-card-v2">
+                    <div class="alert-icon yellow">🔧</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Sensor Maintenance Required</div>
+                        <div class="alert-desc">4 sensors in Room A due for calibration within 7 days</div>
+                    </div>
+                </div>
 
-                <article class="alert-card red">
-                    <div class="alert-title">Potential Leak Risk in Area B</div>
-                    <p>Based on pressure patterns, a leak may develop in the next 24–48 hours</p>
-                </article>
+                <div class="alert-card-v2">
+                    <div class="alert-icon yellow">🔧</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Sensor Maintenance Required</div>
+                        <div class="alert-desc">2 sensors in Room B due for calibration within 7 days</div>
+                    </div>
+                </div>
+
+                <div class="alert-card-v2">
+                    <div class="alert-icon">⏱</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Potential Leak Risk in Area B</div>
+                        <div class="alert-desc">Based on pressure patterns, a leak may develop in the next 24–48 hours</div>
+                    </div>
+                </div>
+
             </div>
+
         </div>
     </div>
 </div>

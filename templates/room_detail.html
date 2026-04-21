@@ -10,32 +10,52 @@
 <div class="phone-shell">
     <div class="app-frame">
         <div class="app-screen">
-            <div class="screen-header">
-                <div class="screen-title">
-                    <span class="back-arrow">←</span>
-                    <div>
-                        <p class="subtitle">Floor #01</p>
-                        <h1>{{ room }}</h1>
+
+            <!-- BACK HEADER -->
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <div class="back-header">
+                        <a class="back-btn" href="/rooms">←</a>
+                    </div>
+                    <div class="sensor-subtitle">Floor #01</div>
+                    <div style="font-family:'Syne',sans-serif; font-size:26px; font-weight:700; color:#fff; margin-top:2px;">{{ room }}</div>
+                </div>
+            </div>
+
+            <!-- FLOOR MAP -->
+            <div class="map-panel">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="floor-label">Floor #01</span>
+                    <div class="map-legend">
+                        <div class="legend-item"><span class="dot green"></span>Normal</div>
+                        <div class="legend-item"><span class="dot yellow"></span>Warning</div>
+                        <div class="legend-item"><span class="dot red"></span>Active Leak</div>
+                    </div>
+                </div>
+                <div class="room-mini" style="min-height:100px;">
+                    <span>Room - A</span>
+                    <div class="room-dots-field" style="gap:16px; padding:12px 8px;">
+                        <span class="dot green"></span>
+                        <span class="dot green"></span>
+                        <span class="dot yellow" style="margin-top:10px; margin-left:20px;"></span>
                     </div>
                 </div>
             </div>
 
-            <div class="map-panel compact">
-                <div class="floor-label">Room A</div>
-                <div class="map-dots">
-                    <span class="dot green"></span>
-                    <span class="dot green"></span>
-                    <span class="dot yellow"></span>
+            <!-- ENVIRONMENTAL FACTORS -->
+            <div class="env-section-header">
+                <span class="env-label">Environmental Factors</span>
+                <span class="env-label">Today</span>
+            </div>
+            <div class="env-grid">
+                <div class="env-row">
+                    <div class="env-card">Temperature <strong>72°F</strong></div>
+                    <div class="env-card">Humidity <strong>45%</strong></div>
                 </div>
+                <div class="env-card">Pressure <strong>1013 HPA</strong></div>
+                <div class="env-card">Air Quality <strong>Moderate</strong></div>
             </div>
 
-            <div class="panel-row">
-                <div class="mini-card">Temperature<span>72°F</span></div>
-                <div class="mini-card">Humidity<span>45%</span></div>
-            </div>
-
-            <div class="mini-card full">Pressure<span>1013 HPA</span></div>
-            <div class="mini-card full">Air Quality<span>Moderate</span></div>
         </div>
     </div>
 </div>

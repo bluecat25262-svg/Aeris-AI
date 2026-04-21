@@ -1,73 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ gas }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Aeris.AI - {{ gas }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
 </head>
 <body>
+<div class="phone-shell">
+    <div class="app-frame">
+        <div class="app-screen">
 
-<div class="navbar">
-    <div><strong>Aeris.AI</strong></div>
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/rooms">Rooms</a>
-        <a href="/alerts">Alerts</a>
-        <a href="/immediate">Immediate</a>
-    </div>
-</div>
-<header>{{ gas }} Sensor Data</header>
+            <!-- BACK + GAS NAME -->
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <div class="back-header">
+                        <a class="back-btn" href="/rooms">←</a>
+                    </div>
+                    <div class="gas-name">{{ gas }}</div>
+                    <div class="sensor-reading">{{ data.reading }} PPM</div>
+                </div>
+                <span class="active-pill">Active</span>
+            </div>
 
-<div class="container">
+            <!-- WAVEFORM -->
+            <div class="chart-area">
+                <svg class="waveform" viewBox="0 0 340 80" fill="none" preserveAspectRatio="none">
+                    <line x1="0" y1="28" x2="340" y2="28" stroke="#ff5c2e" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+                    <polyline
+                        points="0,65 20,55 40,62 60,48 80,54 100,40 120,47 140,36 160,45 180,32 200,40 220,34 240,43 260,31 280,38 300,27 320,35 340,30"
+                        stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="chart-tabs">
+                    <span class="chart-tab active">1D</span>
+                    <span class="chart-tab">1W</span>
+                    <span class="chart-tab">1M</span>
+                    <span class="chart-tab">1Y</span>
+                    <span class="chart-tab">5Y</span>
+                    <span class="chart-tab">MAX</span>
+                </div>
+            </div>
 
-    <!-- CURRENT READING -->
-    <div class="card">
-        <h2>Current Reading</h2>
-        <p class="{% if data.status == 'danger' %}red{% elif data.status == 'warning' %}orange{% else %}green{% endif %}">
-            {{ data.reading }}
-        </p>
+            <!-- FLOOR MAP -->
+            <div class="map-panel">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span class="floor-label">Floor #01</span>
+                    <div class="map-legend">
+                        <div class="legend-item"><span class="dot green"></span>Normal</div>
+                        <div class="legend-item"><span class="dot yellow"></span>Warning</div>
+                        <div class="legend-item"><span class="dot red"></span>Active Leak</div>
+                    </div>
+                </div>
+                <div class="room-mini" style="min-height:100px;">
+                    <span>Room - A</span>
+                    <div class="room-dots-field" style="gap:20px; padding:12px 8px;">
+                        <span class="dot green"></span>
+                        <span class="dot green" style="margin-left:24px;"></span>
+                        <span class="dot green" style="margin-left:36px; margin-top:14px;"></span>
+                    </div>
+                </div>
+            </div>
 
-        {% if data.status == 'danger' %}
-            <p class="red status">HIGH RISK DETECTED</p>
-        {% elif data.status == 'warning' %}
-            <p class="orange status">MODERATE RISK</p>
-        {% else %}
-            <p class="green status">SAFE LEVELS</p>
-        {% endif %}
-    </div>
+            <!-- ENVIRONMENTAL FACTORS -->
+            <div class="env-section-header">
+                <span class="env-label">Environmental Factors</span>
+                <span class="env-label">Today</span>
+            </div>
+            <div class="env-grid">
+                <div class="env-row">
+                    <div class="env-card">Temperature <strong>72°F</strong></div>
+                    <div class="env-card">Humidity <strong>45%</strong></div>
+                </div>
+                <div class="env-card">Pressure <strong>1013 HPA</strong></div>
+                <div class="env-card">Air Quality <strong>Moderate</strong></div>
+            </div>
 
-    <!-- ENVIRONMENTAL CONDITIONS -->
-    <div class="card">
-        <h2>Environmental Conditions</h2>
-        <p>Temperature: 72°F</p>
-        <p>Humidity: 45%</p>
-        <p>Pressure: Normal</p>
-        <p>Weather: Clear</p>
-        <p>Air Quality Index: 42 (Moderate)</p>
-    </div>
-
-    <!-- TREND SECTION -->
-    <div class="card">
-        <h2>Reading Trends (Past Year)</h2>
-        <p>Graphical trend data will appear here.</p>
-        <div style="height:120px; background:#222; border-radius:6px; display:flex; align-items:center; justify-content:center;">
-            <span style="color:#888;">Trend Graph Placeholder</span>
         </div>
     </div>
-
-    <!-- AI PREDICTION -->
-    <div class="card">
-        <h2>AI Prediction</h2>
-        {% if data.status == 'danger' %}
-            <p class="red">⚠ 85% probability of continued gas increase.</p>
-        {% elif data.status == 'warning' %}
-            <p class="orange">⚠ 45% probability of rising gas levels.</p>
-        {% else %}
-            <p class="green">Low probability of gas leak.</p>
-        {% endif %}
-        <p>Recommendation: Monitor closely and ventilate if needed.</p>
-    </div>
-
 </div>
-
 </body>
 </html>
