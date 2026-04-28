@@ -5,59 +5,215 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Aeris.AI - {{ room }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+        .chart-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 18px 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chart-block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chart-metric-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .chart-current {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .danger-badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+        .badge-danger  { background: rgba(255,76,76,0.18);  color: #ff6b6b; border: 1px solid rgba(255,76,76,0.3); }
+        .badge-warning { background: rgba(245,166,35,0.18); color: #f5a623; border: 1px solid rgba(245,166,35,0.3); }
+        .badge-normal  { background: rgba(61,220,132,0.15); color: #3ddc84; border: 1px solid rgba(61,220,132,0.25); }
+        .legend-row { display: flex; gap: 14px; flex-wrap: wrap; }
+        .legend-dot { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+        .legend-line { width: 18px; height: 2px; border-radius: 2px; }
+    </style>
 </head>
 <body>
 <div class="phone-shell">
     <div class="app-frame">
         <div class="app-screen">
 
-            <!-- BACK HEADER -->
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>
                     <div class="back-header">
                         <a class="back-btn" href="/rooms">←</a>
                     </div>
-                    <div class="sensor-subtitle">Floor #01</div>
-                    <div style="font-family:'Syne',sans-serif; font-size:26px; font-weight:700; color:#fff; margin-top:2px;">{{ room }}</div>
+                    <div class="sensor-subtitle">Live Sensor Data</div>
+                    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#fff;margin-top:2px;">{{ room }}</div>
                 </div>
+                <span class="active-pill">Live</span>
             </div>
 
-            <!-- FLOOR MAP -->
-            <div class="map-panel">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="floor-label">Floor #01</span>
-                    <div class="map-legend">
-                        <div class="legend-item"><span class="dot green"></span>Normal</div>
-                        <div class="legend-item"><span class="dot yellow"></span>Warning</div>
-                        <div class="legend-item"><span class="dot red"></span>Active Leak</div>
-                    </div>
-                </div>
-                <div class="room-mini" style="min-height:100px;">
-                    <span>Room - A</span>
-                    <div class="room-dots-field" style="gap:16px; padding:12px 8px;">
-                        <span class="dot green"></span>
-                        <span class="dot green"></span>
-                        <span class="dot yellow" style="margin-top:10px; margin-left:20px;"></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ENVIRONMENTAL FACTORS -->
-            <div class="env-section-header">
-                <span class="env-label">Environmental Factors</span>
-                <span class="env-label">Today</span>
-            </div>
+            {% if latest %}
             <div class="env-grid">
                 <div class="env-row">
-                    <div class="env-card">Temperature <strong>72°F</strong></div>
-                    <div class="env-card">Humidity <strong>45%</strong></div>
+                    <div class="env-card">Temperature <strong>{{ latest.temperature_C }}°C</strong></div>
+                    <div class="env-card">Humidity <strong>{{ latest['humidity_%'] }}%</strong></div>
                 </div>
-                <div class="env-card">Pressure <strong>1013 HPA</strong></div>
-                <div class="env-card">Air Quality <strong>Moderate</strong></div>
+                <div class="env-card">Pressure <strong>{{ latest.pressure_hPa }} hPa</strong></div>
+            </div>
+            {% endif %}
+
+            <!-- TEMPERATURE -->
+            <div class="chart-block">
+                <div class="chart-block-header">
+                    <span class="chart-metric-name">🌡 Temperature</span>
+                    <span id="temp-badge" class="danger-badge badge-normal">—</span>
+                </div>
+                <div id="temp-value" class="chart-current">—</div>
+                <div class="legend-row">
+                    <div class="legend-dot"><div class="legend-line" style="background:#60a5fa;"></div>Reading</div>
+                    <div class="legend-dot"><div class="legend-line" style="background:#f5a623; opacity:.7;"></div>Warning ≥27°C</div>
+                    <div class="legend-dot"><div class="legend-line" style="background:#ff4c4c; opacity:.7;"></div>Danger ≥29°C</div>
+                </div>
+                <canvas id="tempChart" height="120"></canvas>
+            </div>
+
+            <!-- HUMIDITY -->
+            <div class="chart-block">
+                <div class="chart-block-header">
+                    <span class="chart-metric-name">💧 Humidity</span>
+                    <span id="hum-badge" class="danger-badge badge-normal">—</span>
+                </div>
+                <div id="hum-value" class="chart-current">—</div>
+                <div class="legend-row">
+                    <div class="legend-dot"><div class="legend-line" style="background:#818cf8;"></div>Reading</div>
+                    <div class="legend-dot"><div class="legend-line" style="background:#f5a623; opacity:.7;"></div>Warning ≥60%</div>
+                    <div class="legend-dot"><div class="legend-line" style="background:#ff4c4c; opacity:.7;"></div>Danger ≥65%</div>
+                </div>
+                <canvas id="humChart" height="120"></canvas>
+            </div>
+
+            <!-- PRESSURE -->
+            <div class="chart-block">
+                <div class="chart-block-header">
+                    <span class="chart-metric-name">🔵 Pressure</span>
+                    <span id="pres-badge" class="danger-badge badge-normal">—</span>
+                </div>
+                <div id="pres-value" class="chart-current">—</div>
+                <div class="legend-row">
+                    <div class="legend-dot"><div class="legend-line" style="background:#34d399;"></div>Reading</div>
+                    <div class="legend-dot"><div class="legend-line" style="background:#f5a623; opacity:.7;"></div>Warning ≥1020 hPa</div>
+                    <div class="legend-dot"><div class="legend-line" style="background:#ff4c4c; opacity:.7;"></div>Danger ≥1023 hPa</div>
+                </div>
+                <canvas id="presChart" height="120"></canvas>
             </div>
 
         </div>
     </div>
 </div>
+
+<script>
+const ROOM = "{{ room }}";
+
+function getStatus(val, warn, danger) {
+    if (val >= danger) return "danger";
+    if (val >= warn)   return "warning";
+    return "normal";
+}
+
+function setBadge(id, status, val, unit) {
+    const el = document.getElementById(id);
+    el.textContent = status.toUpperCase();
+    el.className = "danger-badge badge-" + status;
+}
+
+function makeChart(canvasId, labels, values, color, warnT, dangerT, unit) {
+    const ctx = document.getElementById(canvasId).getContext("2d");
+    const pointColors = values.map(v => v >= dangerT ? "#ff4c4c" : v >= warnT ? "#f5a623" : color);
+    return new Chart(ctx, {
+        type: "line",
+        data: {
+            labels,
+            datasets: [
+                {
+                    data: values,
+                    borderColor: color,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointBackgroundColor: pointColors,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: (ctx) => {
+                        const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 180);
+                        g.addColorStop(0, color + "44");
+                        g.addColorStop(1, color + "00");
+                        return g;
+                    },
+                },
+                {
+                    data: Array(labels.length).fill(warnT),
+                    borderColor: "#f5a623",
+                    borderWidth: 1.5,
+                    borderDash: [5, 4],
+                    pointRadius: 0,
+                    fill: false,
+                    tension: 0,
+                },
+                {
+                    data: Array(labels.length).fill(dangerT),
+                    borderColor: "#ff4c4c",
+                    borderWidth: 1.5,
+                    borderDash: [5, 4],
+                    pointRadius: 0,
+                    fill: false,
+                    tension: 0,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: { mode: "index", intersect: false },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.parsed.y}${unit}` } } },
+            scales: {
+                x: { ticks: { color: "#6b7280", font: { size: 10 }, maxTicksLimit: 6 }, grid: { color: "rgba(255,255,255,0.04)" } },
+                y: { ticks: { color: "#6b7280", font: { size: 10 } }, grid: { color: "rgba(255,255,255,0.06)" } }
+            }
+        }
+    });
+}
+
+fetch(`/api/chart/${encodeURIComponent(ROOM)}`)
+    .then(r => r.json())
+    .then(d => {
+        const L = d.labels;
+
+        const tV = d.temperature.values, tL = tV[tV.length-1];
+        document.getElementById("temp-value").textContent = tL + d.temperature.unit;
+        setBadge("temp-badge", getStatus(tL, d.temperature.warning_thresh, d.temperature.danger_thresh));
+        makeChart("tempChart", L, tV, "#60a5fa", d.temperature.warning_thresh, d.temperature.danger_thresh, d.temperature.unit);
+
+        const hV = d.humidity.values, hL = hV[hV.length-1];
+        document.getElementById("hum-value").textContent = hL + d.humidity.unit;
+        setBadge("hum-badge", getStatus(hL, d.humidity.warning_thresh, d.humidity.danger_thresh));
+        makeChart("humChart", L, hV, "#818cf8", d.humidity.warning_thresh, d.humidity.danger_thresh, d.humidity.unit);
+
+        const pV = d.pressure.values, pL = pV[pV.length-1];
+        document.getElementById("pres-value").textContent = pL + d.pressure.unit;
+        setBadge("pres-badge", getStatus(pL, d.pressure.warning_thresh, d.pressure.danger_thresh));
+        makeChart("presChart", L, pV, "#34d399", d.pressure.warning_thresh, d.pressure.danger_thresh, d.pressure.unit);
+    });
+</script>
 </body>
 </html>

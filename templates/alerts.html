@@ -5,68 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Aeris.AI - Alerts</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    <style>
+        .field-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.06);
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+    </style>
 </head>
 <body>
 <div class="phone-shell">
     <div class="app-frame">
         <div class="app-screen">
 
-            <!-- BACK HEADER -->
             <div class="back-header">
                 <a class="back-btn" href="/rooms">←</a>
-                <span class="page-title">Recent alerts</span>
+                <span class="page-title">Recent Alerts</span>
             </div>
 
-            <!-- RECENT ALERTS (Figma 5 & 6 style) -->
-            <div style="display:flex; flex-direction:column; gap:10px;">
-
-                <div class="alert-item">
-                    <div class="alert-row-top">
-                        <div class="alert-area">
-                            <span class="dot red"></span>
-                            Processing Area C
+            {% if triggered %}
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                {% for alert in triggered %}
+                    <div class="alert-item">
+                        <div class="alert-row-top">
+                            <div class="alert-area">
+                                <span class="dot {{ 'red' if alert.level == 'danger' else 'yellow' }}"></span>
+                                {{ alert.field.replace('_C','').replace('_%','').replace('_hPa','').replace('_',' ').title() }}
+                                {{ alert.level.upper() }}
+                            </div>
+                            <span class="alert-time">{{ alert.timestamp[11:16] }}</span>
                         </div>
-                        <span class="alert-time">15 mins ago</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between;">
-                        <span class="alert-sensor">Sensor: SEN-C12</span>
-                        <span class="alert-reading">Reading: 72 ppm</span>
-                    </div>
-                </div>
-
-                <div class="alert-item">
-                    <div class="alert-row-top">
-                        <div class="alert-area">
-                            <span class="dot red"></span>
-                            Processing Area C
+                        <div style="display:flex;justify-content:space-between;margin-top:2px;">
+                            <span class="alert-sensor">{{ alert.timestamp[:10] }}</span>
+                            <span class="alert-reading">Value: {{ alert.value }}</span>
                         </div>
-                        <span class="alert-time">18 mins ago</span>
                     </div>
-                    <div style="display:flex; justify-content:space-between;">
-                        <span class="alert-sensor">Sensor: SEN-C08</span>
-                        <span class="alert-reading">Reading: 68 ppm</span>
-                    </div>
+                {% endfor %}
                 </div>
-
-                <div class="alert-item">
-                    <div class="alert-row-top">
-                        <div class="alert-area">
-                            <span class="dot red"></span>
-                            Storage Area B
-                        </div>
-                        <span class="alert-time">35 mins ago</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between;">
-                        <span class="alert-sensor">Sensor: SEN-B04</span>
-                        <span class="alert-reading">Reading: 28 ppm</span>
-                    </div>
+            {% else %}
+                <div style="text-align:center;color:var(--muted);padding:40px 20px;font-size:14px;">
+                    ✅ No threshold alerts right now.
                 </div>
+            {% endif %}
 
-            </div>
-
-            <!-- PREDICTIVE / MAINTENANCE ALERTS (Figma 4 style) -->
-            <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
-
+            <!-- Static predictive alerts -->
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted);margin-top:8px;">Predictive</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
                 <div class="alert-card-v2">
                     <div class="alert-icon">⏱</div>
                     <div class="alert-content">
@@ -74,7 +63,6 @@
                         <div class="alert-desc">Based on pressure patterns, a leak may develop in the next 24–48 hours</div>
                     </div>
                 </div>
-
                 <div class="alert-card-v2">
                     <div class="alert-icon yellow">🔧</div>
                     <div class="alert-content">
@@ -82,23 +70,6 @@
                         <div class="alert-desc">4 sensors in Room A due for calibration within 7 days</div>
                     </div>
                 </div>
-
-                <div class="alert-card-v2">
-                    <div class="alert-icon yellow">🔧</div>
-                    <div class="alert-content">
-                        <div class="alert-title">Sensor Maintenance Required</div>
-                        <div class="alert-desc">2 sensors in Room B due for calibration within 7 days</div>
-                    </div>
-                </div>
-
-                <div class="alert-card-v2">
-                    <div class="alert-icon">⏱</div>
-                    <div class="alert-content">
-                        <div class="alert-title">Potential Leak Risk in Area B</div>
-                        <div class="alert-desc">Based on pressure patterns, a leak may develop in the next 24–48 hours</div>
-                    </div>
-                </div>
-
             </div>
 
         </div>
