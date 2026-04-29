@@ -17,8 +17,22 @@
                     <div class="brand-avatar">M</div>
                     <span class="brand-name">AERIS.AI</span>
                 </div>
-                <div class="bell-btn">🔔</div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <button id="refresh-btn" onclick="requestRefresh()" style="
+                        height:40px; padding:0 14px; border-radius:12px;
+                        background:var(--bg-card); border:1px solid var(--border);
+                        color:var(--text); font-size:13px; font-weight:600;
+                        cursor:pointer; display:flex; align-items:center; gap:7px;
+                        font-family:'DM Sans',sans-serif;">
+                        <span id="refresh-icon" style="font-size:16px;">⟳</span>
+                        <span id="refresh-label">Refresh</span>
+                    </button>
+                    <div class="bell-btn">🔔</div>
+                </div>
             </div>
+            <div id="refresh-status" style="display:none; font-size:12px; color:var(--muted);
+                background:var(--bg-card); border:1px solid var(--border);
+                border-radius:10px; padding:10px 14px; text-align:center;"></div>
 
             <!-- STATS -->
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -134,5 +148,72 @@
         </div>
     </div>
 </div>
+
+<script>
+let pollInterval = null;
+
+function setBtn(loading) {
+    const btn = document.getElementById('refresh-btn');
+    const icon = document.getElementById('refresh-icon');
+    const label = document.getElementById('refresh-label');
+    if (loading) {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        icon.style.animation = 'spin 1s linear infinite';
+        label.textContent = 'Waiting for Pi…';
+    } else {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        icon.style.animation = '';
+        label.textContent = 'Refresh';
+    }
+}
+
+function showStatus(msg, color) {
+    const el = document.getElementById('refresh-status');
+    el.style.display = 'block';
+    el.style.color = color || 'var(--muted)';
+    el.textContent = msg;
+}
+
+function requestRefresh() {
+    setBtn(true);
+    showStatus('⏳ Sending request to Raspberry Pi…', '#f5a623');
+    fetch('/api/trigger/request', { method: 'POST' })
+        .then(r => r.json())
+        .then(() => {
+            showStatus('📡 Pi is generating data (5s) then uploading…', '#f5a623');
+            startPolling();
+        })
+        .catch(() => showStatus('❌ Failed to send request.', '#ff4c4c'));
+}
+
+function startPolling() {
+    if (pollInterval) clearInterval(pollInterval);
+    let attempts = 0;
+    pollInterval = setInterval(() => {
+        attempts++;
+        fetch('/api/trigger/status')
+            .then(r => r.json())
+            .then(d => {
+                if (d.status === 'idle' && d.completed_at) {
+                    clearInterval(pollInterval);
+                    setBtn(false);
+                    showStatus('✅ Data refreshed! Reloading page…', '#3ddc84');
+                    setTimeout(() => location.reload(), 1200);
+                }
+            });
+        if (attempts > 60) { // 60s timeout
+            clearInterval(pollInterval);
+            setBtn(false);
+            showStatus('⚠️ Pi did not respond in time. Check connection.', '#ff4c4c');
+        }
+    }, 1000);
+}
+</script>
+<style>
+@keyframes spin { to { transform: rotate(360deg); display:inline-block; } }
+#refresh-icon { display:inline-block; }
+</style>
 </body>
 </html>

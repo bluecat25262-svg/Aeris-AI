@@ -62,6 +62,18 @@ def init_db():
             screenshot_path TEXT, timestamp TEXT
         );
     """)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS trigger_flags (
+            id INTEGER PRIMARY KEY CHECK (id = 1),
+            status TEXT NOT NULL DEFAULT 'idle',
+            requested_at TEXT,
+            completed_at TEXT
+        );
+    """)
+    # Ensure exactly one row exists
+    cur.execute("""
+        INSERT OR IGNORE INTO trigger_flags (id, status) VALUES (1, 'idle');
+    """)
     conn.commit()
     cur.close()
     conn.close()
@@ -181,6 +193,57 @@ def generate_fake_data():
     cur.close()
     conn.close()
     return "Fake data generated!"
+
+# ── Refresh / Trigger API ──────────────────────────────────────────────────────
+
+@app.route("/api/trigger/request", methods=["POST"])
+def trigger_request():
+    """Browser calls this when user clicks Refresh Data."""
+    conn = get_db_connection()
+    cur  = conn.cursor()
+    cur.execute("""
+        UPDATE trigger_flags SET status='pending', requested_at=?, completed_at=NULL WHERE id=1;
+    """, (datetime.utcnow().isoformat(),))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({"ok": True, "status": "pending"})
+
+@app.route("/api/trigger/poll")
+def trigger_poll():
+    """Raspberry Pi polls this to check if a refresh was requested."""
+    conn = get_db_connection()
+    cur  = conn.cursor()
+    cur.execute("SELECT status, requested_at FROM trigger_flags WHERE id=1;")
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    return jsonify({"status": row["status"], "requested_at": row["requested_at"]})
+
+@app.route("/api/trigger/complete", methods=["POST"])
+def trigger_complete():
+    """Raspberry Pi calls this after it finishes generating + uploading data."""
+    conn = get_db_connection()
+    cur  = conn.cursor()
+    cur.execute("""
+        UPDATE trigger_flags SET status='idle', completed_at=? WHERE id=1;
+    """, (datetime.utcnow().isoformat(),))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({"ok": True, "status": "idle"})
+
+@app.route("/api/trigger/status")
+def trigger_status():
+    """Browser polls this to know when the Pi has finished."""
+    conn = get_db_connection()
+    cur  = conn.cursor()
+    cur.execute("SELECT status, requested_at, completed_at FROM trigger_flags WHERE id=1;")
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    return jsonify(dict(row))
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
