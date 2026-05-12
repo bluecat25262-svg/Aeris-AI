@@ -24,8 +24,8 @@
                         color:var(--text); font-size:13px; font-weight:600;
                         cursor:pointer; display:flex; align-items:center; gap:7px;
                         font-family:'DM Sans',sans-serif;">
-                        <span id="refresh-icon" style="font-size:16px;">⟳</span>
-                        <span id="refresh-label">Refresh</span>
+                        <span id="refresh-icon" style="font-size:16px;">&#10227;</span>
+                        <span id="refresh-label">Generate</span>
                     </button>
                     <div class="bell-btn">🔔</div>
                 </div>
@@ -160,12 +160,12 @@ function setBtn(loading) {
         btn.disabled = true;
         btn.style.opacity = '0.6';
         icon.style.animation = 'spin 1s linear infinite';
-        label.textContent = 'Waiting for Pi…';
+        label.textContent = 'Waiting';
     } else {
         btn.disabled = false;
         btn.style.opacity = '1';
         icon.style.animation = '';
-        label.textContent = 'Refresh';
+        label.textContent = 'Generate';
     }
 }
 
@@ -178,14 +178,17 @@ function showStatus(msg, color) {
 
 function requestRefresh() {
     setBtn(true);
-    showStatus('⏳ Sending request to Raspberry Pi…', '#f5a623');
+    showStatus('Sending request to Raspberry Pi...', '#f5a623');
     fetch('/api/trigger/request', { method: 'POST' })
         .then(r => r.json())
         .then(() => {
-            showStatus('📡 Pi is generating data (5s) then uploading…', '#f5a623');
+            showStatus('Pi is generating new sensor data and uploading it...', '#f5a623');
             startPolling();
         })
-        .catch(() => showStatus('❌ Failed to send request.', '#ff4c4c'));
+        .catch(() => {
+            setBtn(false);
+            showStatus('Failed to send request.', '#ff4c4c');
+        });
 }
 
 function startPolling() {
@@ -199,14 +202,14 @@ function startPolling() {
                 if (d.status === 'idle' && d.completed_at) {
                     clearInterval(pollInterval);
                     setBtn(false);
-                    showStatus('✅ Data refreshed! Reloading page…', '#3ddc84');
+                    showStatus('Data refreshed. Reloading page...', '#3ddc84');
                     setTimeout(() => location.reload(), 1200);
                 }
             });
         if (attempts > 60) { // 60s timeout
             clearInterval(pollInterval);
             setBtn(false);
-            showStatus('⚠️ Pi did not respond in time. Check connection.', '#ff4c4c');
+            showStatus('Pi did not respond in time. Check connection.', '#ff4c4c');
         }
     }, 1000);
 }
