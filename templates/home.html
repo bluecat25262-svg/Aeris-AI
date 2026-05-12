@@ -37,11 +37,76 @@
                 <span class="cta-arrow">→</span>
             </a>
 
+            <button class="home-generate-btn" id="home-generate-btn" onclick="requestPiData()">
+                Generate Pi Data
+                <span id="home-generate-icon">&#10227;</span>
+            </button>
+            <div id="home-generate-status" class="home-generate-status"></div>
+
             <!-- SECONDARY -->
             <a class="know-more" href="/about">I want to know more</a>
 
         </div>
     </div>
 </div>
+<script>
+let homePollInterval = null;
+
+function setHomeGenerateLoading(loading) {
+    const btn = document.getElementById('home-generate-btn');
+    const icon = document.getElementById('home-generate-icon');
+    btn.disabled = loading;
+    btn.style.opacity = loading ? '0.65' : '1';
+    icon.style.animation = loading ? 'spin 1s linear infinite' : '';
+}
+
+function showHomeGenerateStatus(message, color) {
+    const status = document.getElementById('home-generate-status');
+    status.style.display = 'block';
+    status.style.color = color || 'var(--muted)';
+    status.textContent = message;
+}
+
+function requestPiData() {
+    setHomeGenerateLoading(true);
+    showHomeGenerateStatus('Sending request to Raspberry Pi...', '#f5a623');
+
+    fetch('/api/trigger/request', { method: 'POST' })
+        .then(response => response.json())
+        .then(() => {
+            showHomeGenerateStatus('Pi is generating and uploading data...', '#f5a623');
+            startHomePolling();
+        })
+        .catch(() => {
+            setHomeGenerateLoading(false);
+            showHomeGenerateStatus('Failed to send request.', '#ff4c4c');
+        });
+}
+
+function startHomePolling() {
+    if (homePollInterval) clearInterval(homePollInterval);
+    let attempts = 0;
+
+    homePollInterval = setInterval(() => {
+        attempts++;
+        fetch('/api/trigger/status')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'idle' && data.completed_at) {
+                    clearInterval(homePollInterval);
+                    setHomeGenerateLoading(false);
+                    showHomeGenerateStatus('Data refreshed. Opening dashboard...', '#3ddc84');
+                    setTimeout(() => window.location.href = '/rooms', 1200);
+                }
+            });
+
+        if (attempts > 60) {
+            clearInterval(homePollInterval);
+            setHomeGenerateLoading(false);
+            showHomeGenerateStatus('Pi did not respond in time.', '#ff4c4c');
+        }
+    }, 1000);
+}
+</script>
 </body>
 </html>
